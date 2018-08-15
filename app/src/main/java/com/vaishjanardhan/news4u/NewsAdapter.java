@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<News>{
@@ -27,11 +28,13 @@ public class NewsAdapter extends ArrayAdapter<News>{
         TextView sectionTextView = convertView.findViewById(R.id.section_text_view);
         TextView titleTextView = convertView.findViewById(R.id.title_text_view);
         TextView dateTextView = convertView.findViewById(R.id.date_text_view);
+        TextView authorTextView = convertView.findViewById(R.id.author_text_view);
 
         assert currNews != null;
         String section = currNews.getSection();
         String title = currNews.getTitle();
-        String date = currNews.getDate();;
+        String date = currNews.getDate();
+        String author = currNews.getAuthor();
 
         sectionTextView.setText(section);
         titleTextView.setText(title);
@@ -43,6 +46,12 @@ public class NewsAdapter extends ArrayAdapter<News>{
         //else set the visibility of the date text view to GONE
         else
             dateTextView.setVisibility(View.GONE);
+
+        if (author != null) {
+            authorTextView.setText(author);
+        } else {
+            authorTextView.setVisibility(View.GONE);
+        }
 
         return convertView;
     }

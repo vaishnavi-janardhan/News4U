@@ -7,8 +7,8 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity
     public static final String LOG_TAG = MainActivity.class.getName();
 
     private static final String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/" +
-            "search?order-by=newest&use-date=published&show-references=author&page-size=20&" +
-            "api-key=7c9ff97e-bafe-4a5a-a702-85e92de79564";
+            "search?&show-tags=contributor&api-key=7c9ff97e-bafe-4a5a-a702-85e92de79564";
     /**
      * Constant value for the news loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
