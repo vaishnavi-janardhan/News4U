@@ -181,7 +181,8 @@ public final class QueryUtils {
                 String authorName = null;
                 if (tags != null) {
                     JSONObject authorDescription = tags.optJSONObject(0);
-                    authorName = authorDescription.optString("webTitle");
+                    if (authorDescription != null)
+                        authorName = authorDescription.optString("webTitle");
                 }
 
 
