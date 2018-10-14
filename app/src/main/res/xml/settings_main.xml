@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="@string/settings_category_default"
+        android:entries="@array/settings_category_label"
+        android:entryValues="@array/settings_category_values"
+        android:key="@string/settings_category_key"
+        android:title="@string/settings_category_label" />
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_number_default"
+        android:inputType="number"
+        android:key="@string/settings_number_key"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_number_label" />
+
+    <ListPreference
+        android:defaultValue="@string/settings_theme_default"
+        android:entries="@array/settings_theme_labels"
+        android:entryValues="@array/settings_theme_values"
+        android:key="@string/settings_theme_key"
+        android:title="@string/settings_theme_label" />
+
+</PreferenceScreen>

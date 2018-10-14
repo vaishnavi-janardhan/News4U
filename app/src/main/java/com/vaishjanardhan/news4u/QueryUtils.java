@@ -22,7 +22,10 @@ import java.util.List;
 /**
  * Helper methods related to requesting and receiving news data from Guardian.
  */
-public final class QueryUtils {
+final class QueryUtils {
+    private static final String LOG_TAG = QueryUtils.class.getName();
+
+
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
      * This class is only meant to hold static variables and methods, which can be accessed
@@ -31,12 +34,10 @@ public final class QueryUtils {
     private QueryUtils() {
     }
 
-
-    private static final String LOG_TAG = QueryUtils.class.getName();
     /**
      * Query the Guardian dataset and return a list of {@link News} objects.
      */
-    public static List<News> fetchNewsData(String requestUrl) {
+    static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -55,10 +56,8 @@ public final class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link News}
-        List<News> news = extractFeatureFromJson(jsonResponse);
-
         // Return the list of {@link News}
-        return news;
+        return extractFeatureFromJson(jsonResponse);
     }
 
     /**
@@ -140,7 +139,7 @@ public final class QueryUtils {
      * Return a list of {@link News} objects that has been built up from
      * parsing a JSON response.
      */
-    public static List<News> extractFeatureFromJson(String newsJSON) {
+    private static List<News> extractFeatureFromJson(String newsJSON) {
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {

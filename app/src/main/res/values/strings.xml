@@ -1,5 +1,58 @@
 <resources>
+
     <string name="app_name">News4U</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="empty_state">No news articles available</string>
+
+    <!-- String resources for settings -->
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">News Settings</string>
+
+    <!-- Strings for Category preference [CHAR_LIMIT=30]-->
+    <string name="settings_category_label">Category</string>
+    <string name="settings_category_key" translatable="false">category</string>
+    <string name="settings_category_default" translatable="false">
+        @string/settings_category_none_value</string>
+
+    <!-- Label for Category none option [CHAR_LIMIT=20] -->
+    <string name="settings_category_none_label">All</string>
+    <string name="settings_category_none_value" />
+
+    <!-- Label for Category sports option [CHAR_LIMIT=20] -->
+    <string name="settings_category_sports_label">Sports</string>
+    <string name="settings_category_sports_value">sport</string>
+
+    <!-- Label for Category business option [CHAR_LIMIT=20] -->
+    <string name="settings_category_business_label">Business</string>
+    <string name="settings_category_business_value">business</string>
+
+    <!-- Label for Category music option [CHAR_LIMIT=20] -->
+    <string name="settings_category_music_label">Music</string>
+    <string name="settings_category_music_value">music</string>
+
+    <!-- Label for Category travel option [CHAR_LIMIT=20] -->
+    <string name="settings_category_travel_label">Travel</string>
+    <string name="settings_category_travel_value">travel</string>
+
+
+    <!-- Strings for No of Articles preference [CHAR_LIMIT=30]-->
+    <string name="settings_number_label">Number Of Articles</string>
+    <string name="settings_number_key" translatable="false">number</string>
+    <string name="settings_number_default" translatable="false">10</string>
+
+    <!--Strings for Theme preferences -->
+    <string name="settings_theme_label">Theme</string>
+    <string name="settings_theme_key" translatable="false">theme</string>
+    <string name="settings_theme_default" translatable="false">
+        @string/settings_theme_light_value</string>
+
+    <!-- Label for Category music option [CHAR_LIMIT=20] -->
+    <string name="settings_theme_light_label">Light</string>
+    <string name="settings_theme_light_value">light</string>
+
+    <!-- Label for Category music option [CHAR_LIMIT=20] -->
+    <string name="settings_theme_dark_label">Dark</string>
+    <string name="settings_theme_dark_value">dark</string>
+    <string name="menu_refresh">Refresh</string>
+
 </resources>

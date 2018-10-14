@@ -4,11 +4,16 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,12 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<News>>{
+        implements LoaderManager.LoaderCallbacks<List<News>> {
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
+    //private static final String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/" +
+    //        "search?&show-tags=contributor&api-key=7c9ff97e-bafe-4a5a-a702-85e92de79564";
     private static final String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/" +
-            "search?&show-tags=contributor&api-key=7c9ff97e-bafe-4a5a-a702-85e92de79564";
+            "search?";
+
     /**
      * Constant value for the news loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
@@ -34,11 +42,29 @@ public class MainActivity extends AppCompatActivity
     TextView emptyTextView;
     ProgressBar progressBar;
 
-    /** Adapter for the list of news articles */
+    /**
+     * Adapter for the list of news articles
+     */
     private NewsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.DarkTheme);
+
+        SharedPreferences sharedPreferences = PreferenceManager.
+                getDefaultSharedPreferences(this);
+
+        String theme = sharedPreferences.getString(
+                getString(R.string.settings_theme_key),
+                getString(R.string.settings_theme_default)
+        );
+
+        if (theme.equals(getString(R.string.settings_theme_dark_value)))
+            setTheme(R.style.DarkTheme);
+        else if (theme.equals(getString(R.string.settings_theme_light_value)))
+            setTheme(R.style.AppTheme);
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -63,7 +89,10 @@ public class MainActivity extends AppCompatActivity
 
         // Get details on the currently active default data network
 
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo networkInfo = null;
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
 
         //If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -74,9 +103,7 @@ public class MainActivity extends AppCompatActivity
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(NEWS_LOADER_ID, null, this);
-        }
-
-        else{
+        } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
             progressBar.setVisibility(View.GONE);
@@ -105,9 +132,39 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    // onCreateLoader instantiates and returns a new Loader for the given ID
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        // Create a new loader for the given URL
-        return new NewsLoader(this, GUARDIAN_REQUEST_URL);
+
+        SharedPreferences sharedPreferences = PreferenceManager.
+                getDefaultSharedPreferences(this);
+
+        String category = sharedPreferences.getString(
+                getString(R.string.settings_category_key),
+                getString(R.string.settings_category_default)
+        );
+
+        String noOfItems = sharedPreferences.getString(
+                getString(R.string.settings_number_key),
+                getString(R.string.settings_number_default)
+        );
+
+        Log.i(LOG_TAG, "category = " + category);
+
+        // parse breaks apart the URI string that's passed into its parameter
+        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
+
+        // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        // Append query parameter and its value. For example, the `show-tags=contributor`
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("api-key", "7c9ff97e-bafe-4a5a-a702-85e92de79564");
+        if (!category.equals(""))
+            uriBuilder.appendQueryParameter("section", category);
+        uriBuilder.appendQueryParameter("page-size", noOfItems);
+
+        // Return the completed uri
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -132,5 +189,26 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<List<News>> loader) {
         // Loader reset, so we can clear out our existing data.
         adapter.clear();
+    }
+
+    @Override
+    // This method initializes the contents of the activity's options menu
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the options menu specified in XML
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

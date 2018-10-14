@@ -11,16 +11,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class NewsAdapter extends ArrayAdapter<News>{
+public class NewsAdapter extends ArrayAdapter<News> {
     NewsAdapter(Activity context, List<News> news) {
-        super(context,0,news);
+        super(context, 0, news);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent,false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
         News currNews = getItem(position);
@@ -40,8 +40,8 @@ public class NewsAdapter extends ArrayAdapter<News>{
         titleTextView.setText(title);
 
         //If date is available set it on the date text view
-        if(date != null){
-            dateTextView.setText(date.substring(0,10));
+        if (date != null) {
+            dateTextView.setText(date.substring(0, 10));
         }
         //else set the visibility of the date text view to GONE
         else

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/dimen_16" >
+    android:padding="@dimen/dimen_16">
 
     <TextView
         android:id="@+id/section_text_view"
@@ -23,10 +23,10 @@
 
     <TextView
         android:id="@+id/title_text_view"
+        style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_8"
-        style="@style/Base.TextAppearance.AppCompat.Title"
         tools:text="Title" />
 
     <TextView
