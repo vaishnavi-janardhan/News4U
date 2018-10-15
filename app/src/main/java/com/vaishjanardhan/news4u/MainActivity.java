@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -24,14 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<News>> {
+        implements LoaderManager.LoaderCallbacks<List<News>>,
+        SwipeRefreshLayout.OnRefreshListener {
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
     //private static final String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/" +
     //        "search?&show-tags=contributor&api-key=7c9ff97e-bafe-4a5a-a702-85e92de79564";
     private static final String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/" +
-            "search?";
+            "search";
 
     /**
      * Constant value for the news loader ID. We can choose any integer.
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
     TextView emptyTextView;
     ProgressBar progressBar;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * Adapter for the list of news articles
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity
         emptyTextView = findViewById(R.id.empty_text_view);
 
         progressBar = findViewById(R.id.progress_bar);
+
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         // Create a new {@link ArrayAdapter} of news articles
         adapter = new NewsAdapter(this, new ArrayList<News>());
@@ -129,6 +134,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(websiteIntent);
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -172,6 +179,8 @@ public class MainActivity extends AppCompatActivity
         // Clear the adapter of previous news data
         adapter.clear();
 
+        Log.e(LOG_TAG, "OnLoadFinished");
+
         // If there is a valid list of {@link News}, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (news != null && !news.isEmpty()) {
@@ -179,6 +188,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         progressBar.setVisibility(View.GONE);
+
+        swipeRefreshLayout.setRefreshing(false);
 
         emptyTextView.setText(R.string.empty_state);
 
@@ -209,6 +220,21 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+        if (id == R.id.action_refresh) {
+            swipeRefreshLayout.setRefreshing(true);
+            adapter.clear();
+            getLoaderManager()
+                    .restartLoader(NEWS_LOADER_ID, null, this);
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        Log.e(LOG_TAG, "onRefresh");
+        adapter.clear();
+        getLoaderManager()
+                .restartLoader(NEWS_LOADER_ID, null, this);
     }
 }
