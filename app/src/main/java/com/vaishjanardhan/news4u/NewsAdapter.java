@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -29,12 +30,14 @@ public class NewsAdapter extends ArrayAdapter<News> {
         TextView titleTextView = convertView.findViewById(R.id.title_text_view);
         TextView dateTextView = convertView.findViewById(R.id.date_text_view);
         TextView authorTextView = convertView.findViewById(R.id.author_text_view);
+        ImageView imageView = convertView.findViewById(R.id.image_view);
 
         assert currNews != null;
         String section = currNews.getSection();
         String title = currNews.getTitle();
         String date = currNews.getDate();
         String author = currNews.getAuthor();
+        String imageUrl = currNews.getImageUrl();
 
         sectionTextView.setText(section);
         titleTextView.setText(title);
@@ -53,6 +56,12 @@ public class NewsAdapter extends ArrayAdapter<News> {
             authorTextView.setVisibility(View.GONE);
         }
 
+        if (imageUrl != null)
+            new ImageLoadTask(imageUrl, imageView).execute();
+        else
+            imageView.setVisibility(View.GONE);
+
         return convertView;
     }
+
 }

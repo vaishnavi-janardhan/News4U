@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity
             uriBuilder.appendQueryParameter("section", category);
         uriBuilder.appendQueryParameter("page-size", noOfItems);
 
+        uriBuilder.appendQueryParameter("show-fields", "thumbnail");
+
         // Return the completed uri
         return new NewsLoader(this, uriBuilder.toString());
     }

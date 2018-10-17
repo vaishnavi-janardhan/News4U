@@ -7,13 +7,15 @@ public class News {
     private String date;
     private String author;
     private String url;
+    private String imageUrl;
 
-    News(String section, String title, String date, String author, String url) {
+    News(String section, String title, String date, String author, String url, String imageUrl) {
         this.section = section;
         this.title = title;
         this.date = date;
         this.author = author;
         this.url = url;
+        this.imageUrl = imageUrl;
     }
 
     public String getSection() {
@@ -35,5 +37,9 @@ public class News {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

@@ -184,8 +184,14 @@ final class QueryUtils {
                         authorName = authorDescription.optString("webTitle");
                 }
 
+                JSONObject fields = currentNews.optJSONObject("fields");
+                String imageUrl = null;
+                if (fields != null) {
+                    imageUrl = fields.optString("thumbnail");
+                    Log.e(LOG_TAG, imageUrl);
+                }
 
-                News news = new News(section, title, date, authorName, url);
+                News news = new News(section, title, date, authorName, url, imageUrl);
 
                 newsList.add(news);
             }
