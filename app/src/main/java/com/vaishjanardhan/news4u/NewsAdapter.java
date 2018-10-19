@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<News> {
@@ -56,8 +58,12 @@ public class NewsAdapter extends ArrayAdapter<News> {
             authorTextView.setVisibility(View.GONE);
         }
 
-        if (imageUrl != null)
-            new ImageLoadTask(imageUrl, imageView).execute();
+        if (imageUrl != null) {
+            Glide.with(getContext())
+                    .load(imageUrl)
+                    .thumbnail(0.5f)
+                    .into(imageView);
+        }
         else
             imageView.setVisibility(View.GONE);
 

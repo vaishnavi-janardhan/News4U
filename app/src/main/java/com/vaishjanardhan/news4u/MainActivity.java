@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     TextView emptyTextView;
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
+    LottieAnimationView lottieAnimationView;
 
     /**
      * Adapter for the list of news articles
@@ -81,6 +84,8 @@ public class MainActivity extends AppCompatActivity
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
+        lottieAnimationView = findViewById(R.id.main_no_internet_anim);
+
         // Create a new {@link ArrayAdapter} of news articles
         adapter = new NewsAdapter(this, new ArrayList<News>());
 
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity
             progressBar.setVisibility(View.GONE);
             // Update empty state with no connection error message
             emptyTextView.setText(R.string.no_internet_connection);
+            lottieAnimationView.setVisibility(View.VISIBLE);
         }
         newsListView.setEmptyView(emptyTextView);
 
@@ -187,11 +193,17 @@ public class MainActivity extends AppCompatActivity
         // data set. This will trigger the ListView to update.
         if (news != null && !news.isEmpty()) {
             adapter.addAll(news);
+            lottieAnimationView.setVisibility(View.GONE);
+        } else {
+            lottieAnimationView.setAnimation(R.raw.empty_box);
+            lottieAnimationView.setVisibility(View.VISIBLE);
+            lottieAnimationView.playAnimation();
         }
 
         progressBar.setVisibility(View.GONE);
 
-        swipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
 
         emptyTextView.setText(R.string.empty_state);
 
