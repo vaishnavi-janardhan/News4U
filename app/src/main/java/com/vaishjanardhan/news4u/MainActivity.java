@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity
             progressBar.setVisibility(View.GONE);
             // Update empty state with no connection error message
             emptyTextView.setText(R.string.no_internet_connection);
+            //emptyTextView.setVisibility(View.VISIBLE);
             lottieAnimationView.setVisibility(View.VISIBLE);
         }
         newsListView.setEmptyView(emptyTextView);
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         swipeRefreshLayout.setOnRefreshListener(this);
+
     }
 
     @Override
@@ -194,18 +196,19 @@ public class MainActivity extends AppCompatActivity
         if (news != null && !news.isEmpty()) {
             adapter.addAll(news);
             lottieAnimationView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.GONE);
         } else {
             lottieAnimationView.setAnimation(R.raw.empty_box);
             lottieAnimationView.setVisibility(View.VISIBLE);
             lottieAnimationView.playAnimation();
+            emptyTextView.setText(R.string.empty_state);
+            emptyTextView.setVisibility(View.VISIBLE);
         }
 
         progressBar.setVisibility(View.GONE);
 
         if (swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
-
-        emptyTextView.setText(R.string.empty_state);
 
     }
 

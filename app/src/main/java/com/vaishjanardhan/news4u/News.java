@@ -8,6 +8,7 @@ public class News {
     private String author;
     private String url;
     private String imageUrl;
+    private boolean isFavourite;
 
     News(String section, String title, String date, String author, String url, String imageUrl) {
         this.section = section;
@@ -16,6 +17,7 @@ public class News {
         this.author = author;
         this.url = url;
         this.imageUrl = imageUrl;
+        this.isFavourite = false;
     }
 
     public String getSection() {
@@ -41,5 +43,9 @@ public class News {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
     }
 }

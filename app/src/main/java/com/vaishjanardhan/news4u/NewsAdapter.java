@@ -3,12 +3,16 @@ package com.vaishjanardhan.news4u;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 
@@ -58,14 +62,26 @@ public class NewsAdapter extends ArrayAdapter<News> {
             authorTextView.setVisibility(View.GONE);
         }
 
-        if (imageUrl != null) {
+        if (imageUrl != null)
             Glide.with(getContext())
                     .load(imageUrl)
-                    .thumbnail(0.5f)
                     .into(imageView);
-        }
         else
             imageView.setVisibility(View.GONE);
+
+        final ToggleButton favToggleButton = convertView.findViewById(R.id.fav_toggle_button);
+        favToggleButton.setChecked(false);
+        favToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bookmark_grey));
+        favToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    favToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bookmark_white));
+                    Toast.makeText(getContext(), "Bookmarked!", Toast.LENGTH_SHORT).show();
+                } else
+                    favToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_bookmark_grey));
+            }
+        });
 
         return convertView;
     }
